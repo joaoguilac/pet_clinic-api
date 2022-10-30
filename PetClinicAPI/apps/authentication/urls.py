@@ -5,7 +5,7 @@ from rest_framework_simplejwt.views import (
     TokenRefreshView,
 )
 
-from .views import UserViewSet
+from PetClinicAPI.apps.authentication.views import UserViewSet
 
 router = SimpleRouter()
 router.register('users', UserViewSet, basename='user')

@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, UserManager
-from PetClinicAPI.abstracts.base_model import BaseModel
+
+from PetClinicAPI.resources.base_model import BaseModel
+
 
 class User(AbstractBaseUser, BaseModel):
     REQUIRED_FIELDS = ['first_name', 'last_name', 'password', 'role']

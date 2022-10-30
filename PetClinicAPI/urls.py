@@ -23,10 +23,12 @@ schema_view = get_schema_view(
         title="PetClinicAPI",
         default_version='v1',
     ),
+    public=True,
 )
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('authentication/', include('authentication.urls')),
+    path('clients/', include('client.urls')),
     re_path(r'^swagger/$', schema_view.with_ui('swagger')),
 ]
