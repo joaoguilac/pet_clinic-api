@@ -51,6 +51,7 @@ INSTALLED_APPS = [
 
     'PetClinicAPI.apps.authentication',
     'PetClinicAPI.apps.client',
+    'PetClinicAPI.apps.clinic',
 ]
 
 MIDDLEWARE = [
