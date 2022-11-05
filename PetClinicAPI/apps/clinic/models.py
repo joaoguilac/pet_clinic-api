@@ -1,7 +1,7 @@
 from django.db import models
 
 from PetClinicAPI.resources.base_model import BaseModel
-from client.models import Pet
+from PetClinicAPI.apps.client.models import Pet
 
 class Veterinary(BaseModel):
     name = models.CharField(max_length=255, verbose_name='Nome')
@@ -21,7 +21,7 @@ class Appointment(BaseModel):
     date = models.DateField(verbose_name='Data')
     description = models.TextField(verbose_name='Descrição', null=True, blank=True)
     diagnosis = models.TextField(verbose_name='Diagnóstico', null=True, blank=True)
-    drugs = models.ManyToManyField(Drug, verbose_name='Remédios', null=True, blank=True)
+    drugs = models.ManyToManyField(Drug, verbose_name='Remédios')
     pet = models.ForeignKey(Pet, on_delete=models.CASCADE, verbose_name='Paciente')
     veterinary = models.ForeignKey(Veterinary, on_delete=models.CASCADE, related_name='appointments', verbose_name='Veterinário')
 
