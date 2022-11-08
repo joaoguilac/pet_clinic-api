@@ -9,12 +9,12 @@ class UserSerializer(serializers.ModelSerializer):
     last_name = serializers.CharField(max_length=255, required=True)
     email = serializers.EmailField(max_length=255, required=True)
     password = serializers.CharField(max_length=255, required=True, write_only=True)
-    role = serializers.ChoiceField(choices=User.RoleChoices.choices, default=User.RoleChoices.USER)
+    role = serializers.ChoiceField(choices=User.RoleChoices.choices, default=User.RoleChoices.OPERATOR)
 
     def create(self, validated_data):
-        user = User.objects.create_user(**validated_data)
-        
+        user = super(UserSerializer, self).create(validated_data)
         user.set_password(validated_data['password'])
+        user.save()
 
         return user
 
@@ -40,3 +40,4 @@ class UserSerializer(serializers.ModelSerializer):
                 fields=['email']
             )
         ]
+        ref_name = None

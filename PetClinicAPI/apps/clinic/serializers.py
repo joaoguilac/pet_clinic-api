@@ -1,18 +1,9 @@
 from rest_framework import serializers
 
-from PetClinicAPI.apps.clinic.models import Veterinary, Drug, Appointment
+from PetClinicAPI.apps.clinic.models import Drug, Appointment
 from PetClinicAPI.apps.client.serializers import PetSerializer
+from PetClinicAPI.apps.authentication.serializers import UserSerializer
 
-class VeterinarySerializer(serializers.ModelSerializer):
-    id = serializers.UUIDField(read_only=True)
-    name = serializers.CharField(max_length=255)
-    email = serializers.EmailField(max_length=255)
-    phone = serializers.CharField(max_length=255)
-
-    class Meta:
-        model = Veterinary
-        fields = ('id', 'name', 'email', 'phone')
-        ref_name = None
 
 class DrugSerializer(serializers.ModelSerializer):
     id = serializers.UUIDField(read_only=True)
@@ -29,11 +20,29 @@ class AppointmentSerializer(serializers.ModelSerializer):
     description = serializers.CharField(max_length=255)
     diagnosis = serializers.CharField(max_length=255)
     drugs = DrugSerializer(many=True, read_only=True)
-    drugs_id = serializers.UUIDField(many=True, write_only=True)
+    drugs_ids = serializers.ListField(child=serializers.UUIDField(), write_only=True)
     pet = PetSerializer(read_only=True)
     pet_id = serializers.UUIDField(write_only=True)
-    veterinary = VeterinarySerializer(read_only=True)
-    veterinary_id = serializers.UUIDField(write_only=True)
+    veterinary = UserSerializer(read_only=True)
+
+    def create(self, validated_data):
+        veterinary_id = self.context['request'].user.id
+        validated_data['veterinary_id'] = veterinary_id
+        drugs_id = validated_data.pop('drugs_ids')
+        appointment = super(AppointmentSerializer, self).create(validated_data)
+        appointment.drugs.set(drugs_id)
+        appointment.save()
+
+        return appointment
+
+    def update(self, instance, validated_data):
+        veterinary_id = self.context['request'].user.id
+        validated_data['veterinary_id'] = veterinary_id
+        appointment = super(AppointmentSerializer, self).update(instance, validated_data)
+        appointment.drugs.set(validated_data['drugs_ids'])
+        appointment.save()
+
+        return appointment
 
     class Meta:
         model = Appointment

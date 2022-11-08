@@ -9,10 +9,10 @@ class AddressSerializer(serializers.ModelSerializer):
     state = serializers.CharField(max_length=255)
     district = serializers.CharField(max_length=255)
     zip = serializers.CharField(max_length=9)
-    
+
     class Meta:
         model = Address
-        fields = ('id', 'street', 'city', 'state', 'district', 'zip')
+        fields = '__all__'
         ref_name = None
 
 class PetSerializer(serializers.ModelSerializer):
@@ -32,23 +32,12 @@ class ClientSerializer(serializers.ModelSerializer):
     name = serializers.CharField(max_length=255)
     phone = serializers.CharField(max_length=255)
     email = serializers.CharField(max_length=255)
-    address = AddressSerializer()
+    address = AddressSerializer(read_only=True)
+    address_id = serializers.UUIDField(write_only=True)
     pets = PetSerializer(many=True, read_only=True)
-
-    def create(self, validated_data):
-        address = validated_data.pop('address')
-        address = Address.objects.create(**address)
-        client = Client.objects.create(address=address, **validated_data)
-        return client
-
-    def update(self, instance, validated_data):
-        address = validated_data.pop('address')
-        address = Address.objects.update(**address)
-        client = Client.objects.update(address=address, **validated_data)
-        return client
 
     class Meta:
         model = Client
-        fields = ('id', 'name', 'phone', 'email', 'address', 'pets')
+        fields = '__all__'
         ref_name = None
 

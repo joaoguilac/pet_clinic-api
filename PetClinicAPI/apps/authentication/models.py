@@ -9,15 +9,15 @@ class User(AbstractBaseUser, BaseModel):
     USERNAME_FIELD = 'email'
 
     class RoleChoices(models.TextChoices):
-        VET = 'vet'
+        VETERINARY = 'veterinary'
         ADMIN = 'admin'
-        USER = 'user'
+        OPERATOR = 'operator'
 
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
     email = models.EmailField(unique=True)
     password = models.CharField(max_length=255)
-    role = models.CharField(max_length=255, choices=RoleChoices.choices, default=RoleChoices.USER)
+    role = models.CharField(max_length=255, choices=RoleChoices.choices, default=RoleChoices.OPERATOR)
 
     objects = UserManager()
 

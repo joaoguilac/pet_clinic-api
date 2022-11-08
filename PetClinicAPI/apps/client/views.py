@@ -1,6 +1,5 @@
 from rest_framework.viewsets import ModelViewSet
-
-from PetClinicAPI.resources.permissions import IsVetOrAdminOrReadOnly
+from rest_framework.permissions import IsAuthenticated
 
 from PetClinicAPI.apps.client.models import Client, Pet, Address
 from PetClinicAPI.apps.client.serializers import ClientSerializer, PetSerializer, AddressSerializer
@@ -8,14 +7,14 @@ from PetClinicAPI.apps.client.serializers import ClientSerializer, PetSerializer
 class ClientViewSet(ModelViewSet):
     queryset = Client.objects.all()
     serializer_class = ClientSerializer
-    permission_classes = [IsVetOrAdminOrReadOnly]
+    permission_classes = [IsAuthenticated]
 
 class PetViewSet(ModelViewSet):
     queryset = Pet.objects.all()
     serializer_class = PetSerializer
-    # permission_classes = [IsVetOrAdminOrReadOnly]
+    permission_classes = [IsAuthenticated]
 
-class AddressSerializer(ModelViewSet):
+class AddressViewSet(ModelViewSet):
     queryset = Address.objects.all()
     serializer_class = AddressSerializer
-    # permission_classes = [IsVetOrAdminOrReadOnly]
+    permission_classes = [IsAuthenticated]
