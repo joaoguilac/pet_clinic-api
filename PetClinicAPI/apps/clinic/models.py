@@ -1,4 +1,5 @@
 from django.db import models
+from django.core.validators import MaxValueValidator, MinValueValidator
 
 from PetClinicAPI.resources.base_model import BaseModel
 from PetClinicAPI.apps.client.models import Pet
@@ -18,5 +19,12 @@ class Appointment(BaseModel):
     pet = models.ForeignKey(Pet, on_delete=models.CASCADE, verbose_name='Paciente')
     veterinary = models.ForeignKey(User, on_delete=models.CASCADE, related_name='appointments', verbose_name='Veterinário')
 
+    class Meta:
+        app_label = 'clinic'
+class Avaliation(BaseModel):
+    appointment = models.ForeignKey(Appointment, on_delete=models.CASCADE, verbose_name='Consulta')
+    comment = models.TextField(verbose_name='Comentário')
+    rating = models.IntegerField(verbose_name='Avaliação', validators=[MinValueValidator(1), MaxValueValidator(5)])
+    
     class Meta:
         app_label = 'clinic'

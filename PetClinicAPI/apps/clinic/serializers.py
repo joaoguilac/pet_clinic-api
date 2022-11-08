@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from PetClinicAPI.apps.clinic.models import Drug, Appointment
+from PetClinicAPI.apps.clinic.models import Drug, Appointment, Avaliation
 from PetClinicAPI.apps.client.serializers import PetSerializer
 from PetClinicAPI.apps.authentication.serializers import UserSerializer
 
@@ -46,5 +46,13 @@ class AppointmentSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Appointment
+        fields = '__all__'
+        ref_name = None
+        
+class AvaliationSerializer(serializers.ModelSerializer):
+    id = serializers.UUIDField(read_only=True)
+    
+    class Meta:
+        model = Avaliation
         fields = '__all__'
         ref_name = None
