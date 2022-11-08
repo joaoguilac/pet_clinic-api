@@ -14,6 +14,15 @@ class DrugSerializer(serializers.ModelSerializer):
         fields = ('id', 'name')
         ref_name = None
 
+class AvaliationSerializer(serializers.ModelSerializer):
+    id = serializers.UUIDField(read_only=True)
+    rating = serializers.IntegerField(max_value=5, min_value=0)
+
+    class Meta:
+        model = Avaliation
+        fields = '__all__'
+        ref_name = None
+
 class AppointmentSerializer(serializers.ModelSerializer):
     id = serializers.UUIDField(read_only=True)
     date = serializers.DateField()
@@ -24,6 +33,7 @@ class AppointmentSerializer(serializers.ModelSerializer):
     pet = PetSerializer(read_only=True)
     pet_id = serializers.UUIDField(write_only=True)
     veterinary = UserSerializer(read_only=True)
+    avaliation = AvaliationSerializer(read_only=True)
 
     def create(self, validated_data):
         veterinary_id = self.context['request'].user.id
@@ -46,13 +56,5 @@ class AppointmentSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Appointment
-        fields = '__all__'
-        ref_name = None
-        
-class AvaliationSerializer(serializers.ModelSerializer):
-    id = serializers.UUIDField(read_only=True)
-    
-    class Meta:
-        model = Avaliation
         fields = '__all__'
         ref_name = None

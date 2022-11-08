@@ -22,9 +22,9 @@ class Appointment(BaseModel):
     class Meta:
         app_label = 'clinic'
 class Avaliation(BaseModel):
-    appointment = models.ForeignKey(Appointment, on_delete=models.CASCADE, verbose_name='Consulta')
+    appointment = models.OneToOneField(Appointment, on_delete=models.CASCADE, related_name="avaliation", verbose_name='Consulta')
     comment = models.TextField(verbose_name='Comentário')
     rating = models.IntegerField(verbose_name='Avaliação', validators=[MinValueValidator(1), MaxValueValidator(5)])
-    
+
     class Meta:
         app_label = 'clinic'

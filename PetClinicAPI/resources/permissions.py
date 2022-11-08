@@ -6,7 +6,7 @@ from PetClinicAPI.apps.authentication.models import User
 class IsAdminForRegisterAndIsOwnerToEdit(permissions.BasePermission):
 
     def has_permission(self, request, view):
-        return bool(request.user.is_authenticated)
+        return bool(request.user.is_authenticated) and bool(request.user.role == User.RoleChoices.ADMIN)
 
     def has_object_permission(self, request, view, obj) -> bool:
         if not request.user.is_authenticated:
