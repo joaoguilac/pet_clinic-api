@@ -1,1 +1,1 @@
-web: python manage.py migrate && gunicorn 'MatchBookBack.wsgi'
+web: python manage.py migrate && gunicorn 'PetClinicAPI.wsgi'
