@@ -10,6 +10,9 @@ drf-yasg = "*"
 djangorestframework-simplejwt = "*"
 whitenoise = "*"
 gunicorn = "*"
+django-cors-headers = "*"
+black = "*"
+python-decouple = "*"
 
 [dev-packages]
 
